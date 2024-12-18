@@ -1,0 +1,17 @@
+name: Auto Assign Issues
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  auto-assign:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Auto-Assign Issue
+      run: |
+        curl -X POST -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+          -H "Accept: application/vnd.github+json" \
+          -d '{"assignees":["username"]}' \
+          https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.issue.number }}
