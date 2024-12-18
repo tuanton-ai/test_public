@@ -11,6 +11,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Debug API Values
+      run: echo "Repository: ${{ github.repository }}, Issue Number: ${{ github.event.issue.number }}"
     - name: Auto-Assign Issue
       run: |
         curl -X POST -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
