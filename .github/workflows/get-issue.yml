@@ -11,15 +11,7 @@ permissions:
 jobs:
   auto-assign:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Debug API Values
+    - name: Get Issue URL
       run: |
-        echo "Repository: ${{ github.repository }}, Issue Number: ${{ github.event.issue.number }}"
-
-    - name: Auto-Assign Issue
-      run: |
-        curl -X POST -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-          -H "Accept: application/vnd.github+json" \
-          -d '{\"assignees\":[\"username\"]}' \
-          https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.issue.number }}
+        echo "The issue URL is: ${{ github.event.issue.html_url }}"
