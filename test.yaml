@@ -1,0 +1,80 @@
+global:
+  replicaCount: 1
+  environment: {}
+  enableCronjob: false
+  enableDeployment: true
+
+imagePullSecrets: acr-secret
+image:
+  repository: neurondacrllte1q.azurecr.io/neurondproduction/ai_service
+  tag: microservice-frontend-2ea330
+  pullPolicy: Always
+
+proxyImage:
+  enabled: false
+
+replicaCount: 1
+
+services:
+  - name: frontend
+    type: NodePort
+    annotations: {}
+    specs:
+      - port: 80
+        targetPort: 3000
+        name: http
+
+environment: {}
+
+liveness:
+  enabled: false
+  path: /
+  port: 3000
+  initialDelaySeconds: 30
+  periodSeconds: 30
+readiness:
+  enabled: false
+  path: /
+  port: 3000
+  initialDelaySeconds: 50
+  periodSeconds: 50
+  failureThreshold: 30
+
+volumes:
+  enabled: false
+  pvc:
+    enabled: false
+    existing_claim:
+    name: pvc
+    mountPath: /pv
+    size: 1G
+    class:
+    accessModes:
+      - ReadWriteOnce
+
+  configMaps: {}
+
+ingress:
+  enabled: true
+  annotations:
+    nginx.org/client-max-body-size: "999M"
+    nginx.org/client-max-body-size: "999M"
+    nginx.ingress.kubernetes.io/proxy-body-size: "999M"
+  hosts:
+    - host: assistant.neurond.com
+      servicePort: 80
+      serviceName: frontend
+      path: /
+    - host: chat.neurond.com
+      servicePort: 80
+      serviceName: frontend
+      path: /
+  tls:
+    - hosts:
+        - assistant.neurond.com
+      secretName: cloudfare-root-ca-ssl
+    - hosts:
+        - chat.neurond.com
+      secretName: cloudfare-root-ca-ssl
+
+resources: {}
