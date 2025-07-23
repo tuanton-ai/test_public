@@ -78,3 +78,5 @@ ingress:
       secretName: cloudfare-root-ca-ssl
 
 resources: {}
+
+# Automated edit via PyGithub
